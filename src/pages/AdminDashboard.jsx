@@ -13,16 +13,22 @@ const AdminDashboard = ({ onProductsUpdate }) => {
     file: null,
   });
 
-  // Fetch products with useCallback to avoid ESLint warnings
+  // Determine API URL based on environment
+  const API_URL =
+    import.meta.env.MODE === "development"
+      ? "http://localhost:5000/api"
+      : import.meta.env.VITE_API_URL;
+
+  // Fetch products
   const fetchProducts = useCallback(async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/products");
+      const res = await axios.get(`${API_URL}/products`);
       setProducts(res.data);
       onProductsUpdate?.();
     } catch (err) {
       console.error("Fetch products error:", err);
     }
-  }, [onProductsUpdate]);
+  }, [onProductsUpdate, API_URL]);
 
   useEffect(() => {
     fetchProducts();
@@ -55,7 +61,7 @@ const AdminDashboard = ({ onProductsUpdate }) => {
     fd.append("imgUrl", form.file);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/products", fd);
+      const res = await axios.post(`${API_URL}/products`, fd);
       setProducts((prev) => [...prev, res.data]);
       onProductsUpdate?.();
       alert("Product uploaded successfully!");
@@ -78,9 +84,9 @@ const AdminDashboard = ({ onProductsUpdate }) => {
   const handleDeleteSection = async (productId, sectionToDelete) => {
     try {
       if (!sectionToDelete) {
-        await axios.delete(`http://localhost:5000/api/products/${productId}`);
+        await axios.delete(`${API_URL}/products/${productId}`);
       } else {
-        await axios.patch(`http://localhost:5000/api/products/${productId}`, { sectionToDelete });
+        await axios.patch(`${API_URL}/products/${productId}`, { sectionToDelete });
       }
       fetchProducts();
     } catch (err) {
@@ -190,7 +196,7 @@ const AdminDashboard = ({ onProductsUpdate }) => {
                       <tr key={item._id + "-" + index}>
                         <td className="border p-2">
                           <img
-                            src={`http://localhost:5000${item.imgUrl}`}
+                            src={`${API_URL}${item.imgUrl}`}
                             alt={item.productName}
                             className="w-14 h-14 object-cover rounded"
                           />
