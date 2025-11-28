@@ -6,6 +6,7 @@ import ProductDetails from "../components/ProductDetails/ProductDetails";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 import axios from "axios";
+import { API_URL } from "../config/api";
 
 const Product = () => {
   const { id } = useParams();
@@ -14,7 +15,7 @@ const Product = () => {
   const [relatedProducts, setRelatedProducts] = useState([]);
 
   useEffect(() => {
-    axios.get("http://localhost:5000/api/products")
+    axios.get(`${API_URL}/products`)
       .then((res) => {
         const products = res.data;
 

@@ -3,6 +3,11 @@ import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../app/features/cart/cartSlice";
 
+const API_URL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5000"
+    : import.meta.env.VITE_API_URL.replace("/api", "");
+
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
   const router = useNavigate();
@@ -27,7 +32,7 @@ const ProductCard = ({ title, productItem }) => {
       <img
         loading="lazy"
         onClick={handleClick}
-        src={`http://localhost:5000${productItem.imgUrl}`}
+        src={`${API_URL}${productItem.imgUrl}`}
         alt={productItem.productName}
         className="w-full h-[200px] object-contain cursor-pointer"
       />

@@ -4,7 +4,12 @@ import Section from "../components/Section";
 import SliderHome from "../components/Slider";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 
-const Home = ({ productsUpdated }) => { // receive a prop to trigger refetch
+const API_URL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5000/api/products"
+    : `${import.meta.env.VITE_API_URL}/products`;
+
+const Home = ({ productsUpdated }) => {
   useWindowScrollToTop();
 
   const [bigDiscountProducts, setBigDiscountProducts] = useState([]);
@@ -13,20 +18,20 @@ const Home = ({ productsUpdated }) => { // receive a prop to trigger refetch
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://localhost:5000/api/products");
+      const res = await fetch(API_URL);
       const data = await res.json();
 
       setBigDiscountProducts(data.filter((p) => p.section?.includes("big discount")));
       setNewArrivalProducts(data.filter((p) => p.section?.includes("new arrivals")));
       setBestSalesProducts(data.filter((p) => p.section?.includes("best sales")));
     } catch (err) {
-      console.error("Error fetching products:", err);
+      console.error(err);
     }
   };
 
   useEffect(() => {
     fetchProducts();
-  }, [productsUpdated]); // refetch whenever productsUpdated changes
+  }, [productsUpdated]);
 
   return (
     <Fragment>
@@ -34,6 +39,7 @@ const Home = ({ productsUpdated }) => { // receive a prop to trigger refetch
         <div className="w-full">
           <SliderHome />
         </div>
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
           <Wrapper />
         </div>

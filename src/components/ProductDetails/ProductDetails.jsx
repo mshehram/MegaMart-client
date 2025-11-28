@@ -3,10 +3,12 @@ import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addToCart } from "../../app/features/cart/cartSlice";
 
+const API_BASE =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5000"
+    : import.meta.env.VITE_API_URL.replace("/api", "");
+
 const ProductDetails = ({ selectedProduct }) => {
-
-  console.log("Selected Product => ", selectedProduct);  // 👈 RIGHT PLACE
-
   const dispatch = useDispatch();
   const [quantity, setQuantity] = useState(1);
 
@@ -22,7 +24,7 @@ const ProductDetails = ({ selectedProduct }) => {
   };
 
   const imageUrl = selectedProduct?.imgUrl
-    ? `http://localhost:5000${selectedProduct.imgUrl}`
+    ? `${API_BASE}${selectedProduct.imgUrl}`
     : "/placeholder.png";
 
   return (

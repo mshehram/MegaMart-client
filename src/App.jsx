@@ -10,7 +10,11 @@ import Register from "./pages/Register";
 import { useAuth } from "./context/AuthContext";
 import axios from "axios";
 
-// Lazy loaded pages
+const API_URL =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5000/api"
+    : import.meta.env.VITE_API_URL;
+
 const Home = lazy(() => import("./pages/Home"));
 const Shop = lazy(() => import("./pages/Shop"));
 const Cart = lazy(() => import("./pages/Cart"));
@@ -50,7 +54,7 @@ function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/products");
+        const res = await axios.get(`${API_URL}/products`);
         setProducts(res.data);
       } catch (err) {
         console.error(err);

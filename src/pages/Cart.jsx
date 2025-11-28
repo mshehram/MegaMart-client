@@ -6,6 +6,11 @@ import {
   deleteProduct,
 } from "../app/features/cart/cartSlice";
 
+const API_BASE =
+  import.meta.env.MODE === "development"
+    ? "http://localhost:5000"
+    : import.meta.env.VITE_API_URL.replace("/api", "");
+
 const Cart = () => {
   const { cartList } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -24,7 +29,6 @@ const Cart = () => {
       <div className="container mx-auto px-4">
         <div className="flex flex-col lg:flex-row gap-8">
 
-          {/* CART ITEMS */}
           <div className="w-full lg:w-2/3">
             {cartList.length === 0 && (
               <h1 className="text-center text-2xl font-semibold text-gray-700">
@@ -36,7 +40,7 @@ const Cart = () => {
               const productQty = item.price * item.qty;
 
               const imageUrl = item.imgUrl
-                ? `http://localhost:5000${item.imgUrl}`
+                ? `${API_BASE}${item.imgUrl}`
                 : "/placeholder.png";
 
               return (
@@ -44,7 +48,6 @@ const Cart = () => {
                   key={item.id}
                   className="relative bg-white shadow-md rounded-2xl p-4 mb-6 flex flex-col md:flex-row items-center gap-4"
                 >
-                  {/* PRODUCT IMAGE */}
                   <div className="w-32 h-32 flex-shrink-0">
                     <img
                       src={imageUrl}
@@ -53,7 +56,6 @@ const Cart = () => {
                     />
                   </div>
 
-                  {/* DETAILS + BUTTONS */}
                   <div className="flex flex-col md:flex-row justify-between w-full items-center">
                     <div className="text-center md:text-left">
                       <h3 className="text-lg font-semibold text-gray-800">
@@ -85,7 +87,6 @@ const Cart = () => {
                     </div>
                   </div>
 
-                  {/* DELETE BUTTON */}
                   <button
                     onClick={() => dispatch(deleteProduct(item))}
                     className="absolute top-3 right-3 text-red-500 hover:text-red-700 text-xl"
@@ -97,7 +98,6 @@ const Cart = () => {
             })}
           </div>
 
-          {/* SUMMARY */}
           <div className="w-full lg:w-1/3 bg-white shadow-lg rounded-2xl p-6 h-fit">
             <h2 className="text-2xl font-semibold text-gray-800 mb-4">
               Cart Summary

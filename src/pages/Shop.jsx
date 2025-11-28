@@ -5,6 +5,7 @@ import ShopList from "../components/ShopList";
 import Banner from "../components/Banner/Banner";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 import axios from "axios";
+import { API_URL } from "../config/api";   // <-- ADD THIS
 
 const Shop = ({ productsUpdated }) => {
   const [products, setProducts] = useState([]);
@@ -15,9 +16,9 @@ const Shop = ({ productsUpdated }) => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/products");
+      const res = await axios.get(`${API_URL}/products`); // <-- REPLACED
       setProducts(res.data);
-      setFilterList(res.data); // reset filtered list
+      setFilterList(res.data);
     } catch (err) {
       console.error("Error fetching products:", err);
     }
@@ -25,7 +26,7 @@ const Shop = ({ productsUpdated }) => {
 
   useEffect(() => {
     fetchProducts();
-  }, [productsUpdated]); // refetch on update
+  }, [productsUpdated]);
 
   const filtered = selectedCategory
     ? products.filter((item) => item.category === selectedCategory)

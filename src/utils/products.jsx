@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { API_URL } from "../config/api";
 import phone08 from "../Images/phone-08.png";
 import sofaSlide from "../Images/hero-img.png";
 import wireless01 from "../Images/wireless-01.png";
@@ -8,16 +9,16 @@ export const useProducts = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/products")
+    fetch(`${API_URL}/products`)
       .then((res) => res.json())
       .then((data) => setProducts(data))
       .catch((err) => console.log("Error loading products:", err));
   }, []);
 
-  const shopProducts = products.filter((item) => item.section === "shop");
-  const discountProducts = products.filter((item) => item.section === "big discount");
-  const newArrivals = products.filter((item) => item.section === "new arrivals");
-  const bestSales = products.filter((item) => item.section === "best sales");
+  const shopProducts = products.filter((item) => item.section?.includes("shop"));
+  const discountProducts = products.filter((item) => item.section?.includes("big discount"));
+  const newArrivals = products.filter((item) => item.section?.includes("new arrivals"));
+  const bestSales = products.filter((item) => item.section?.includes("best sales"));
 
   return { products, shopProducts, discountProducts, newArrivals, bestSales };
 };
