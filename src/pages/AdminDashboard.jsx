@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { API_URL } from "../api"; // import centralized API_URL
+import { API_URL, API_BASE } from "../api"; // import both API_URL and API_BASE
 
 const AdminDashboard = ({ onProductsUpdate }) => {
   const [products, setProducts] = useState([]);
@@ -191,7 +191,7 @@ const AdminDashboard = ({ onProductsUpdate }) => {
                       <tr key={item._id + "-" + index}>
                         <td className="border p-2">
                           <img
-                            src={`${API_URL}${item.imgUrl}`}
+                            src={`${API_BASE}${item.imgUrl}`} // use API_BASE here
                             alt={item.productName}
                             className="w-14 h-14 object-cover rounded"
                           />
