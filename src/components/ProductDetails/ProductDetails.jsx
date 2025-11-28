@@ -2,11 +2,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { addToCart } from "../../app/features/cart/cartSlice";
-
-const API_BASE =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5000"
-    : import.meta.env.VITE_API_URL.replace("/api", "");
+import { API_BASE } from "../../config/api"; // updated
 
 const ProductDetails = ({ selectedProduct }) => {
   const dispatch = useDispatch();
@@ -47,11 +43,9 @@ const ProductDetails = ({ selectedProduct }) => {
 
           <div className="flex items-center gap-10 my-4">
             <div className="flex">
-              <i className="fa fa-star text-[#ffcd4e] text-sm mr-1"></i>
-              <i className="fa fa-star text-[#ffcd4e] text-sm mr-1"></i>
-              <i className="fa fa-star text-[#ffcd4e] text-sm mr-1"></i>
-              <i className="fa fa-star text-[#ffcd4e] text-sm mr-1"></i>
-              <i className="fa fa-star text-[#ffcd4e] text-sm mr-1"></i>
+              {Array(5).fill().map((_, i) => (
+                <i key={i} className="fa fa-star text-[#ffcd4e] text-sm mr-1"></i>
+              ))}
             </div>
             <span className="text-gray-600">{selectedProduct?.avgRating} ratings</span>
           </div>

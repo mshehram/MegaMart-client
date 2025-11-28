@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
+import { API_URL } from "../api"; // import centralized API_URL
 
 const AdminDashboard = ({ onProductsUpdate }) => {
   const [products, setProducts] = useState([]);
@@ -13,12 +14,6 @@ const AdminDashboard = ({ onProductsUpdate }) => {
     file: null,
   });
 
-  // Determine API URL based on environment
-  const API_URL =
-    import.meta.env.MODE === "development"
-      ? "http://localhost:5000/api"
-      : import.meta.env.VITE_API_URL;
-
   // Fetch products
   const fetchProducts = useCallback(async () => {
     try {
@@ -28,7 +23,7 @@ const AdminDashboard = ({ onProductsUpdate }) => {
     } catch (err) {
       console.error("Fetch products error:", err);
     }
-  }, [onProductsUpdate, API_URL]);
+  }, [onProductsUpdate]);
 
   useEffect(() => {
     fetchProducts();

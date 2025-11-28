@@ -2,11 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../app/features/cart/cartSlice";
-
-const API_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5000"
-    : import.meta.env.VITE_API_URL.replace("/api", "");
+import { API_BASE } from "../../config/api"; // ✅ updated import
 
 const ProductCard = ({ title, productItem }) => {
   const dispatch = useDispatch();
@@ -21,6 +17,8 @@ const ProductCard = ({ title, productItem }) => {
     toast.success("Product added to cart!");
   };
 
+  const imageUrl = productItem?.imgUrl ? `${API_BASE}${productItem.imgUrl}` : "/placeholder.png";
+
   return (
     <div className="relative bg-white p-5 rounded-lg shadow-[0_1px_3px_rgba(3,0,71,0.09)] m-2">
       {title === "Big Discount" && productItem.discount && (
@@ -32,7 +30,7 @@ const ProductCard = ({ title, productItem }) => {
       <img
         loading="lazy"
         onClick={handleClick}
-        src={`${API_URL}${productItem.imgUrl}`}
+        src={imageUrl}
         alt={productItem.productName}
         className="w-full h-[200px] object-contain cursor-pointer"
       />

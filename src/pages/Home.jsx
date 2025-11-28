@@ -3,11 +3,7 @@ import Wrapper from "../components/wrapper/Wrapper";
 import Section from "../components/Section";
 import SliderHome from "../components/Slider";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
-
-const API_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5000/api/products"
-    : `${import.meta.env.VITE_API_URL}/products`;
+import { API_URL } from "../config/api"; // centralized API_URL
 
 const Home = ({ productsUpdated }) => {
   useWindowScrollToTop();
@@ -18,14 +14,14 @@ const Home = ({ productsUpdated }) => {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(API_URL);
+      const res = await fetch(`${API_URL}/products`);
       const data = await res.json();
 
       setBigDiscountProducts(data.filter((p) => p.section?.includes("big discount")));
       setNewArrivalProducts(data.filter((p) => p.section?.includes("new arrivals")));
       setBestSalesProducts(data.filter((p) => p.section?.includes("best sales")));
     } catch (err) {
-      console.error(err);
+      console.error("Error fetching products:", err);
     }
   };
 

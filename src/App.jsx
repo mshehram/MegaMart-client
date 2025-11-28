@@ -9,11 +9,7 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import { useAuth } from "./context/AuthContext";
 import axios from "axios";
-
-const API_URL =
-  import.meta.env.MODE === "development"
-    ? "http://localhost:5000/api"
-    : import.meta.env.VITE_API_URL;
+import { API_URL } from "./api"; // <-- updated import
 
 const Home = lazy(() => import("./pages/Home"));
 const Shop = lazy(() => import("./pages/Shop"));
@@ -38,7 +34,10 @@ function Layout({ products, setProducts }) {
           <Route path="/shop" element={<Shop productsUpdated={products} />} />
           <Route path="/shop/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
-          <Route path="/admin" element={<AdminDashboard onProductsUpdate={() => setProducts([...products])} />} />
+          <Route
+            path="/admin"
+            element={<AdminDashboard onProductsUpdate={() => setProducts([...products])} />}
+          />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
         </Routes>
@@ -54,10 +53,10 @@ function App() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await axios.get(`${API_URL}/products`);
+        const res = await axios.get(`${API_URL}/products`); // <-- using API_URL from api.js
         setProducts(res.data);
       } catch (err) {
-        console.error(err);
+        console.error("Error fetching products:", err);
       }
     };
     fetchProducts();

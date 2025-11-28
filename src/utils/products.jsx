@@ -1,18 +1,24 @@
 import { useEffect, useState } from "react";
-import { API_URL } from "../config/api";
 import phone08 from "../Images/phone-08.png";
 import sofaSlide from "../Images/hero-img.png";
 import wireless01 from "../Images/wireless-01.png";
 import watchSlide from "../Images/watch-07.png";
+import { API_URL } from "../config/api"; // centralized API_URL
 
 export const useProducts = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`${API_URL}/products`)
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.log("Error loading products:", err));
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${API_URL}/products`);
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Error loading products:", err);
+      }
+    };
+    fetchProducts();
   }, []);
 
   const shopProducts = products.filter((item) => item.section?.includes("shop"));

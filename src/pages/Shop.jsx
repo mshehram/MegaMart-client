@@ -5,7 +5,7 @@ import ShopList from "../components/ShopList";
 import Banner from "../components/Banner/Banner";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 import axios from "axios";
-import { API_URL } from "../config/api";   // <-- ADD THIS
+import { API_URL } from "../config/api"; // centralized API_URL
 
 const Shop = ({ productsUpdated }) => {
   const [products, setProducts] = useState([]);
@@ -16,7 +16,7 @@ const Shop = ({ productsUpdated }) => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get(`${API_URL}/products`); // <-- REPLACED
+      const res = await axios.get(`${API_URL}/products`);
       setProducts(res.data);
       setFilterList(res.data);
     } catch (err) {
