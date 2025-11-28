@@ -6,17 +6,19 @@ import ProductDetails from "../components/ProductDetails/ProductDetails";
 import ProductReviews from "../components/ProductReviews/ProductReviews";
 import useWindowScrollToTop from "../hooks/useWindowScrollToTop";
 import axios from "axios";
-import { API_URL } from "../config/api";
+import { API_URL } from "../config/api"; // using config
 
 const Product = () => {
   const { id } = useParams();
-
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
 
+  useWindowScrollToTop();
+
   useEffect(() => {
-    axios.get(`${API_URL}/products`)
-      .then((res) => {
+    const fetchProducts = async () => {
+      try {
+        const res = await axios.get(`${API_URL}/products`);
         const products = res.data;
 
         const product = products.find((item) => String(item._id) === String(id));
@@ -27,12 +29,18 @@ const Product = () => {
             (item) => item.category === product.category && item._id !== product._id
           );
           setRelatedProducts(related);
+        } else {
+          setRelatedProducts([]);
         }
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
+      } catch (err) {
+        console.error("Error fetching products:", err);
+        setSelectedProduct(null);
+        setRelatedProducts([]);
+      }
+    };
 
-  useWindowScrollToTop();
+    fetchProducts();
+  }, [id]); // only re-run when id changes
 
   return (
     <Fragment>
